@@ -4,6 +4,7 @@ import { CartContext } from "../CartContext";
 
 const Card = ({product, showAddToCartButton = true}) => {
     const {cart, setCart} = useContext(CartContext);
+    const [isAdding, setAdded] = useState(false)
     
     const addItem = (event, product) => {
         event.preventDefault();
@@ -23,13 +24,17 @@ const Card = ({product, showAddToCartButton = true}) => {
         }
         _cart.totalItems += 1;
         setCart(_cart);
+        setAdded(true);
+        setTimeout(()=>{
+            setAdded(false)
+        }, 2000)
         
     }
     const showAddToCartBtn = (showAddToCartButton, product) => {
         return (
           showAddToCartButton && (
-            <button  onClick = {(e) => addItem(e, product)} className="btn btn-outline-warning mt-2 mb-2 card-btn-1  ">
-              Add to cart
+            <button  disabled= {isAdding} onClick = {(e) => addItem(e, product)} className= {`btn ${isAdding ? "btn-success" : "btn-outline-warning" } mt-2 mb-2 card-btn-1`}>
+              { isAdding ?  "Added" : "Add to cart"}
             </button>
           )
         );
